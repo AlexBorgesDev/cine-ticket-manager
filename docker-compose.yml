@@ -1,0 +1,41 @@
+version: '3.9'
+name: cine-ticket-manager
+
+services:
+  database:
+    image: postgres:15.3
+    restart: unless-stopped
+    container_name: db-cine-ticket-manager
+    environment:
+      POSTGRES_DB: cine-ticket-manager-development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  api:
+    container_name: api-cine-ticket-manager
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    working_dir: /app
+    command: sh -c "npm run migration:run && npm run start:dev"
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    environment:
+      - ENV_NAME=development
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_DATABASE=cine-ticket-manager-development
+    depends_on:
+      - database
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '5'
