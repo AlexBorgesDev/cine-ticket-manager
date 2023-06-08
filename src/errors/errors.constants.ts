@@ -6,8 +6,8 @@ import { ErrorObjectType } from './errors.types';
 export enum ErrorType {
   INVALID_CREDENTIAL = 'INVALID_CREDENTIAL',
   INVALID_INPUT = 'INVALID_INPUT',
-  MEMBER_ALREADY_EXISTS = 'MEMBER_ALREADY_EXISTS',
   UNAUTHORIZED = 'UNAUTHORIZED',
+  USER_ALREADY_EXISTS = 'USER_ALREADY_EXISTS',
 }
 
 export const errors: Record<ErrorType, ErrorObjectType> = {
@@ -23,17 +23,17 @@ export const errors: Record<ErrorType, ErrorObjectType> = {
     statusCode: HttpStatus.BAD_REQUEST,
     type: ErrorType.INVALID_INPUT,
   },
-  MEMBER_ALREADY_EXISTS: {
-    code: 2002,
-    message: 'Member already exists',
-    statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-    type: ErrorType.MEMBER_ALREADY_EXISTS,
-  },
   UNAUTHORIZED: {
     code: 4001,
     message: 'Unauthorized action',
     statusCode: HttpStatus.UNAUTHORIZED,
     type: ErrorType.UNAUTHORIZED,
+  },
+  USER_ALREADY_EXISTS: {
+    code: 2002,
+    message: 'Member already exists',
+    statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    type: ErrorType.USER_ALREADY_EXISTS,
   },
 };
 
