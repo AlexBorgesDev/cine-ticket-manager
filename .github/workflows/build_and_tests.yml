@@ -57,7 +57,7 @@ jobs:
         run: npm run build
 
       - name: Run Unit Tests
-        run: npm run test:cov --passWithNoTests
+        run: npm run test:cov -- --passWithNoTests
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
@@ -65,4 +65,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run e2e Tests
-        run: npm run test:e2e --passWithNoTests
+        run: npm run test:e2e -- --passWithNoTests
