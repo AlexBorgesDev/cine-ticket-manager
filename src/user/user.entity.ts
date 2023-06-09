@@ -26,7 +26,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column()
-  @Matches(/^[a-zA-ZÀ-ÿ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
+  @Matches(/^[A-Za-zÀ-ÿ ]+$/g)
   @MinLength(2)
   name: string;
 

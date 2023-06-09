@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator'
 export class SignUpInput {
   @Field()
   @Length(2, 255)
-  @Matches(/^[a-zA-ZÀ-ÿ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
+  @Matches(/^[A-Za-zÀ-ÿ ]+$/g)
   @IsString()
   @IsNotEmpty()
   name: string;
