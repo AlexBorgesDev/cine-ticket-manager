@@ -8,6 +8,7 @@ import { ENVs } from './@global/env.validation';
 import { EnvName } from './@global/types';
 import { AppResolver } from './app.resolver';
 import { databaseConfig } from './database/database.constants';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { databaseConfig } from './database/database.constants';
       },
       inject: [ConfigService],
     }),
+    UserModule,
   ],
   providers: [AppResolver],
 })

@@ -24,7 +24,7 @@ export const databaseConfig: DBConfigs = (service) => {
     database: configService.get<string>('DB_DATABASE'),
     logger: isDev && new DatabaseLogger(['log', 'warn']),
     logging: isDev,
-    entities: ['*.entity.js'],
+    entities: ['**/*.entity.js'],
     migrations: ['database/migrations/*.js'],
     synchronize: false,
     migrationsRun: !isDev,

@@ -39,6 +39,7 @@
     "class-validator": "^0.14.0",
     "graphql": "^16.6.0",
     "pg": "^8.11.0",
+    "pg-mem": "^1.8.6",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.16",
@@ -102,6 +103,9 @@
       "src/@global/",
       "src/database/",
       "main.ts"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/../jest.setup.ts"
     ]
   }
 }
