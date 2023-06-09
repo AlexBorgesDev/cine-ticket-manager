@@ -23,7 +23,7 @@ describe('UserService', () => {
     describe('when the user does not exist', () => {
       it('creates the user and returns it in an object', async () => {
         const input = {
-          name: faker.person.fullName(),
+          name: 'User Test',
           email: faker.internet.email({ lastName: Date.now().toString() }),
           password: faker.internet.password({ length: 12 }),
         };

@@ -4,7 +4,7 @@ import { User } from './user.entity';
 
 export const createUser = async (overrides?: Partial<User>, noSave?: boolean): Promise<User> => {
   const user = User.create({
-    name: faker.person.fullName(),
+    name: 'User Test',
     email: faker.internet.email({ lastName: Date.now().toString() }),
     password: faker.internet.password({ length: 12 }),
     ...overrides,

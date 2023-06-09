@@ -19,7 +19,7 @@ describe('UserResolver', () => {
   describe('signIn', () => {
     it('creates a new user correctly', async () => {
       const input = {
-        name: faker.person.fullName(),
+        name: 'User Test',
         email: faker.internet.email({ lastName: Date.now().toString() }),
         password: faker.internet.password({ length: 12 }),
       };
