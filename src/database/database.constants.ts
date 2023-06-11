@@ -13,6 +13,7 @@ export const databaseConfig: DBConfigs = (service) => {
   if (!service) ConfigModule.forRoot({ validate: ENVs.validate });
 
   const envName = configService.get<EnvName>('ENV_NAME');
+  const isTest = envName === EnvName.test;
   const isDev = envName === EnvName.development;
 
   return {
@@ -21,7 +22,7 @@ export const databaseConfig: DBConfigs = (service) => {
     port: configService.get<number>('DB_PORT'),
     username: configService.get<string>('DB_USER'),
     password: configService.get<string>('DB_PASS'),
-    database: configService.get<string>('DB_DATABASE'),
+    database: isTest ? 'cine-ticket-manager-test' : configService.get<string>('DB_DATABASE'),
     logger: isDev && new DatabaseLogger(['log', 'warn']),
     logging: isDev,
     entities: ['**/*.entity.js'],

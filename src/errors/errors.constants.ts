@@ -31,7 +31,7 @@ export const errors: Record<ErrorType, ErrorObjectType> = {
   },
   USER_ALREADY_EXISTS: {
     code: 2002,
-    message: 'Member already exists',
+    message: 'User already exists',
     statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
     type: ErrorType.USER_ALREADY_EXISTS,
   },
