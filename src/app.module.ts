@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ENVs } from './@global/env.validation';
 import { EnvName } from './@global/types';
 import { AppResolver } from './app.resolver';
+import { AuthModule } from './auth/auth.module';
 import { databaseConfig } from './database/database.constants';
 import { UserModule } from './user/user.module';
 
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
       },
       inject: [ConfigService],
     }),
+    AuthModule,
     UserModule,
   ],
   providers: [AppResolver],
