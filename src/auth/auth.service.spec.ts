@@ -28,7 +28,7 @@ describe('AuthService', () => {
 
         const result = await service.signIn(input);
 
-        expect(result).toEqual({ accessToken: 'any_token', type: 'Bearer' });
+        expect(result).toEqual({ accessToken: 'any_token' });
       });
     });
 
