@@ -6,6 +6,7 @@ import { GraphQLModule, Query, Resolver } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ENVs } from '~/@global/env.validation';
+import { AuthModule } from '~/auth/auth.module';
 import { databaseConfig } from '~/database/database.constants';
 import { HttpExceptionFilter } from '~/errors/errors.filters';
 
@@ -36,6 +37,7 @@ class TestResolver {
       playground: false,
       sortSchema: true,
     }),
+    AuthModule,
   ],
   providers: [
     TestResolver,
