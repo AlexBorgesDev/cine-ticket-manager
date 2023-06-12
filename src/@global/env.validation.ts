@@ -27,6 +27,10 @@ export class ENVs {
   @IsNotEmpty()
   DB_DATABASE: string;
 
+  @IsString()
+  @IsNotEmpty()
+  JWT_SECRET: string;
+
   static validate(config: Record<string, unknown>) {
     const validatedConfig = plainToInstance(ENVs, config, {
       enableImplicitConversion: true,

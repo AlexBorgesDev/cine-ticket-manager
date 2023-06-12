@@ -34,6 +34,7 @@ services:
       - DB_USER=postgres
       - DB_PASS=postgres
       - DB_DATABASE=cine-ticket-manager-development
+      - JWT_SECRET=cine-ticket-manager
     depends_on:
       - database
     logging:
