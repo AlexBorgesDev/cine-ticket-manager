@@ -3,20 +3,24 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 
+import { AuthService } from '~/auth/auth.service';
 import { SignUpInput } from '~/user/user.input';
 import { createUser } from '~/user/user.mock';
 import { UserModule } from '~/user/user.module';
 
-import { userMutations } from './graphql/user-e2e.graphql';
+import { userMutations, userQueries } from './graphql/user-e2e.graphql';
 import { BaseE2eModule } from './jest-e2e.utils';
 
 describe('UserResolver (e2e)', () => {
   let app: INestApplication;
+  let authService: AuthService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [BaseE2eModule, UserModule],
     }).compile();
+
+    authService = moduleRef.get<AuthService>(AuthService);
 
     app = moduleRef.createNestApplication();
     await app.init();
@@ -120,6 +124,63 @@ describe('UserResolver (e2e)', () => {
 
           expect(Date.parse(res.body.data.signUp.user.createdAt)).not.toBeNaN();
           expect(Date.parse(res.body.data.signUp.user.updatedAt)).not.toBeNaN();
+        });
+      });
+    });
+  });
+
+  describe('user (query)', () => {
+    describe('when authenticated', () => {
+      it('returns the user', async () => {
+        const password = faker.internet.password({ length: 12 });
+
+        const user = await createUser({ password });
+        const { accessToken } = await authService.signIn({ email: user.email, password });
+
+        const res = await request(app.getHttpServer())
+          .post('/graphql')
+          .send({ query: userQueries.user })
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(200);
+
+        expect(res.body).toEqual({
+          data: {
+            user: {
+              email: user.email,
+              name: user.name,
+              role: 'USER',
+              uuid: user.uuid,
+              createdAt: user.createdAt.toISOString(),
+              updatedAt: user.updatedAt.toISOString(),
+              isAdmin: false,
+              isEmployer: false,
+              isSuperAdmin: false,
+            },
+          },
+        });
+      });
+    });
+
+    describe('when unauthenticated', () => {
+      it('returns an error', async () => {
+        const res = await request(app.getHttpServer()).post('/graphql').send({ query: userQueries.user }).expect(200);
+
+        expect(res.body).toEqual({
+          data: null,
+          errors: expect.arrayContaining([
+            expect.objectContaining({
+              message: 'Unauthorized',
+              locations: expect.any(Array),
+              path: ['user'],
+              extensions: {
+                code: 'UNAUTHENTICATED',
+                originalError: {
+                  statusCode: 401,
+                  message: 'Unauthorized',
+                },
+              },
+            }),
+          ]),
         });
       });
     });

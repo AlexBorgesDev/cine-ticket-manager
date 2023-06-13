@@ -24,3 +24,19 @@ export const userMutations = {
     }
   }`,
 };
+
+export const userQueries = {
+  user: `query {
+    user {
+      email
+      name
+      role
+      uuid
+      createdAt
+      updatedAt
+      isAdmin
+      isEmployer
+      isSuperAdmin
+    }
+  }`,
+};
