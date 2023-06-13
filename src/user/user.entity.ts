@@ -1,8 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { genSaltSync, hash } from 'bcrypt';
-import { IsEmail, IsEnum, IsOptional, IsString, IsUUID, Matches, MinLength, validateSync } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString, IsUUID, Matches, MinLength } from 'class-validator';
 import {
-  BaseEntity,
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -11,9 +10,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 
-import { MutationError } from '~/errors/errors.errors';
+import { BaseEntity } from '~/@global/models';
 
 import { UserRole } from './user.types';
 
@@ -79,16 +77,6 @@ export class User extends BaseEntity {
 
   @BeforeInsert()
   protected async onBeforeInsert() {
-    this.uuid = uuid();
-
     if (this.password) this.password = await hash(this.password, genSaltSync());
-
-    const errors = validateSync(this);
-    if (errors.length > 0) {
-      throw new MutationError(
-        'INVALID_INPUT',
-        errors.map((e) => e.property),
-      );
-    }
   }
 }
