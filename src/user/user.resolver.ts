@@ -1,6 +1,6 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Public } from '~/auth/auth.decorators';
+import { CurrentUser, Public } from '~/auth/auth.decorators';
 
 import { SignUpResult } from './user.dto';
 import { User } from './user.entity';
@@ -10,6 +10,11 @@ import { UserService } from './user.service';
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
+
+  @Query(() => User)
+  user(@CurrentUser() user: User) {
+    return user;
+  }
 
   @Public()
   @Mutation(() => SignUpResult)
