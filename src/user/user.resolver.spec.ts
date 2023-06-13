@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { createUser } from './user.mock';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { UserRole } from './user.types';
@@ -39,6 +40,14 @@ describe('UserResolver', () => {
           updatedAt: expect.any(Date),
         }),
       });
+    });
+  });
+
+  describe('user', () => {
+    it('returns the user', async () => {
+      const user = await createUser();
+
+      expect(resolver.user(user)).toEqual(user);
     });
   });
 });
