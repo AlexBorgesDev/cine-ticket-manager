@@ -9,6 +9,10 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
 
   abstract uuid: string;
 
+  abstract createdAt: Date;
+
+  abstract updatedAt: Date;
+
   @BeforeInsert()
   protected onValidateBeforeInsert() {
     if (!this.uuid) this.uuid = uuid();
