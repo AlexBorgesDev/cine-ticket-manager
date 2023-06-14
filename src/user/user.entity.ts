@@ -7,11 +7,14 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { BaseEntity } from '~/@global/models';
+import { ActivityLog } from '~/activity-log/activity-log.entity';
 
 import { UserRole } from './user.types';
 
@@ -59,6 +62,9 @@ export class User extends BaseEntity {
   @Field(() => Date)
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => ActivityLog, (activityLog) => activityLog.user, { lazy: true, cascade: true })
+  activityLogs: Promise<Relation<ActivityLog[]>>;
 
   @Field(() => Boolean)
   get isAdmin() {
