@@ -1,17 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsEnum } from 'class-validator';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Relation,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
-import { BaseEntity } from '~/@global/models';
+import { BaseEntity } from '~/database/database.models';
 import { User } from '~/user/user.entity';
 
 import { ActivityLogAction } from './activity-log.types';
@@ -23,10 +14,6 @@ export class ActivityLog extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: string;
 
-  @Index()
-  @Column()
-  userId: number;
-
   @IsEnum(ActivityLogAction)
   @Field(() => String)
   @Column('varchar')
@@ -36,19 +23,8 @@ export class ActivityLog extends BaseEntity {
   @Column('json', { transformer: new ActivityLogDetailsTransform() })
   details: Record<string, any>;
 
-  @Field()
-  @Index({ unique: true })
-  @Column({ unique: true })
-  uuid: string;
-
-  @Field(() => Date)
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field(() => Date)
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @ManyToOne(() => User, (user) => user.activityLogs, { lazy: true })
-  user: Promise<Relation<User>>;
+  @Index()
+  @ManyToOne(() => User, (user) => user.activityLogs, { lazy: true, nullable: false })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: Relation<User> | Promise<Relation<User>>;
 }

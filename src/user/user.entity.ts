@@ -1,27 +1,25 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { genSaltSync, hash } from 'bcrypt';
-import { IsEmail, IsEnum, IsOptional, IsString, IsUUID, Matches, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString, Matches, MinLength } from 'class-validator';
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
   Relation,
-  UpdateDateColumn,
 } from 'typeorm';
 
-import { BaseEntity } from '~/@global/models';
 import { ActivityLog } from '~/activity-log/activity-log.entity';
+import { BaseEntity } from '~/database/database.models';
 
 import { UserRole } from './user.types';
 
 @ObjectType()
 @Entity('users')
 export class User extends BaseEntity {
-  @Index({ unique: true })
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -32,7 +30,6 @@ export class User extends BaseEntity {
   name: string;
 
   @Field()
-  @Index({ unique: true })
   @Column({ unique: true })
   @IsEmail()
   email: string;
@@ -49,19 +46,8 @@ export class User extends BaseEntity {
   @Column({ default: UserRole.USER })
   role: UserRole;
 
-  @Field()
-  @IsUUID()
-  @Index({ unique: true })
-  @Column()
-  uuid: string;
-
-  @Field(() => Date)
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Field(() => Date)
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @OneToMany(() => ActivityLog, (activityLog) => activityLog.user, { lazy: true, cascade: true })
   activityLogs: Promise<Relation<ActivityLog[]>>;
