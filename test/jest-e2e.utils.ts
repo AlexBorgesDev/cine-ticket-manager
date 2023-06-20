@@ -26,6 +26,7 @@ class TestResolver {
         ...databaseConfig(configService),
         entities: ['src/**/*.entity.ts'],
         migrations: ['src/database/migrations/*.ts'],
+        subscribers: ['src/**/*.subscriber.ts'],
         dropSchema: true,
         synchronize: true,
       }),

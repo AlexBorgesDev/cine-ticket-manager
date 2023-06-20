@@ -27,6 +27,7 @@ export const databaseConfig: DBConfigs = (service) => {
     logging: isDev,
     entities: ['**/*.entity.js'],
     migrations: ['database/migrations/*.js'],
+    subscribers: ['**/*.subscriber.js'],
     synchronize: false,
     migrationsRun: !isDev,
     namingStrategy: new SnakeNamingStrategy(),

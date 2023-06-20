@@ -13,6 +13,7 @@ beforeAll(async () => {
   dataSource = (await db.adapters.createTypeormConnection({
     type: 'postgres',
     entities: ['src/**/*.entity.ts'],
+    subscribers: ['**/*.subscriber.ts'],
     synchronize: true,
   })) as DataSource;
 });
