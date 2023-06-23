@@ -8,6 +8,7 @@ import { ENVs } from './@global/env.validation';
 import { EnvName } from './@global/types';
 import { AuthModule } from './auth/auth.module';
 import { databaseConfig } from './database/database.constants';
+import { DirectorModule } from './director/director.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    DirectorModule,
   ],
 })
 export class AppModule {}
