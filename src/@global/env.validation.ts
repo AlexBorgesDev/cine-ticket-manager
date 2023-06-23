@@ -43,4 +43,8 @@ export class ENVs {
     if (errors.length > 0) throw new Error(errors.toString());
     return validatedConfig;
   }
+
+  static isUnitTest() {
+    return process.env.ENV_NAME === EnvName.unitTest;
+  }
 }
