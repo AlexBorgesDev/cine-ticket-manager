@@ -7,6 +7,8 @@ import { EnvName } from '~/@global/types';
 import { DatabaseLogger } from './database.logger';
 import { DBConfigs } from './database.types';
 
+export const MODIFICATION_ALLOWED_ONLY_KEY = 'modificationAllowedOnly';
+
 export const databaseConfig: DBConfigs = (service) => {
   const configService = service || new ConfigService();
 
