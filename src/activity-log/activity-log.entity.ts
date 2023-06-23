@@ -1,11 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 import { BaseEntity } from '~/database/database.models';
 import { User } from '~/user/user.entity';
 
-import { ActivityLogAction } from './activity-log.types';
 import { ActivityLogDetailsTransform } from './activity-log.utils';
 
 @ObjectType()
@@ -14,10 +13,11 @@ export class ActivityLog extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: string;
 
-  @IsEnum(ActivityLogAction)
+  @IsNotEmpty()
+  @IsString()
   @Field(() => String)
   @Column('varchar')
-  action: ActivityLogAction | keyof typeof ActivityLogAction;
+  action: string;
 
   @Field(() => String)
   @Column('json', { transformer: new ActivityLogDetailsTransform() })
