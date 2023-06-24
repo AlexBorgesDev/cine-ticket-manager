@@ -11,7 +11,7 @@ import { ActivityLogDetailsTransform } from './activity-log.utils';
 @ObjectType()
 @Entity('activity_logs')
 export class ActivityLog extends BaseEntity {
-  @PrimaryGeneratedColumn('increment', !ENVs.isUnitTest && { type: 'bigint' })
+  @PrimaryGeneratedColumn('increment', !ENVs.isUnitTest() && { type: 'bigint' })
   id: string;
 
   @IsNotEmpty()
