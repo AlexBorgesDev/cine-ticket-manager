@@ -1,7 +1,11 @@
+// eslint-disable-next-line import/order
+import { EnvName } from '~/@global/types';
+
+process.env.ENV_NAME = EnvName.unitTest;
+
 import { newDb } from 'pg-mem';
 import { DataSource } from 'typeorm';
 
-import { EnvName } from '~/@global/types';
 import { User } from '~/user/user.entity';
 import { UserRole } from '~/user/user.types';
 
@@ -16,8 +20,6 @@ const db = newDb({ autoCreateForeignKeyIndices: true });
 let dataSource: DataSource;
 
 beforeAll(async () => {
-  process.env.ENV_NAME = EnvName.unitTest;
-
   db.public.registerFunction({ name: 'current_database', implementation: () => 'cine-ticket-manager-test' });
   db.public.registerFunction({ name: 'version', implementation: () => '1' });
 
