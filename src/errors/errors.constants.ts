@@ -4,6 +4,7 @@ import { registerEnumType } from '@nestjs/graphql';
 import { ErrorObjectType } from './errors.types';
 
 export enum ErrorType {
+  CATEGORY_ALREADY_EXISTS = 'CATEGORY_ALREADY_EXISTS',
   INVALID_CREDENTIAL = 'INVALID_CREDENTIAL',
   INVALID_INPUT = 'INVALID_INPUT',
   UNAUTHORIZED = 'UNAUTHORIZED',
@@ -11,6 +12,12 @@ export enum ErrorType {
 }
 
 export const errors: Record<ErrorType, ErrorObjectType> = {
+  CATEGORY_ALREADY_EXISTS: {
+    code: 6002,
+    message: 'Category already exists',
+    statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    type: ErrorType.CATEGORY_ALREADY_EXISTS,
+  },
   INVALID_CREDENTIAL: {
     code: 4012,
     message: 'Invalid email or password',
