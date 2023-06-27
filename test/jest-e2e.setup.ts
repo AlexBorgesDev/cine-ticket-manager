@@ -18,6 +18,11 @@ beforeAll(async () => {
   });
 
   if (!dataSource.isInitialized) await dataSource.initialize();
+
+  const entities = dataSource.entityMetadatas;
+  const tableNames = entities.map((entity) => `"${entity.tableName}"`).join(', ');
+
+  await dataSource.query(`TRUNCATE ${tableNames} CASCADE;`);
 });
 
 afterAll(async () => {
