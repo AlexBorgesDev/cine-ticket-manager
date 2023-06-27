@@ -26,7 +26,7 @@ describe('DirectorResolver (e2e)', () => {
       imports: [BaseE2eModule, DirectorModule],
     }).compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleRef.createNestApplication({ logger: false });
     await app.init();
 
     authService = app.get<AuthService>(AuthService);
@@ -35,7 +35,7 @@ describe('DirectorResolver (e2e)', () => {
     accessToken = (await authService.signIn({ email: userTest.email, password: userTestPassword })).accessToken;
   });
 
-  describe('signIn (mutation)', () => {
+  describe('createDirector (mutation)', () => {
     const createDirectorMutation = (input?: Partial<CreateDirectorInput>) => {
       return {
         operationName: 'createDirector',
