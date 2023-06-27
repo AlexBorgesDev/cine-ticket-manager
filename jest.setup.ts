@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 import { User } from '~/user/user.entity';
 import { UserRole } from '~/user/user.types';
 
+export const superUnitTestUserEmail = 'super_jest_test_user@email.com';
 let superUser: User;
 
 jest.mock('./src/user/user.utils', () => {
@@ -32,7 +33,7 @@ beforeAll(async () => {
 
   superUser = await User.create({
     name: 'Super Test User',
-    email: 'super_jest_test_user@email.com',
+    email: superUnitTestUserEmail,
     password: '0123456789',
     role: UserRole.SUPER_ADMIN,
   }).save();
