@@ -1,8 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AfterLoad, BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { CapitalizeTransform } from '~/@global/utils';
+import { capitalize } from '~/@global/utils';
 import { ModificationAllowedOnly } from '~/database/database.decorators';
 import { BaseEntity } from '~/database/database.models';
 
@@ -14,9 +14,15 @@ export class Category extends BaseEntity {
   id: number;
 
   @Field()
-  @Column({ unique: true, transformer: new CapitalizeTransform() })
-  @Matches(/^[A-Za-zÀ-ÿ ]+$/g)
+  @Column({ unique: true })
+  @Matches(/^[A-Za-zÀ-ÿ- ]+$/g)
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @AfterLoad()
+  @BeforeInsert()
+  protected onBeforeInsert() {
+    if (this.name) this.name = capitalize(this.name);
+  }
 }
