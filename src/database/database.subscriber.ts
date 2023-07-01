@@ -70,7 +70,7 @@ export class DatabaseSubscriber implements EntitySubscriberInterface {
         entityName,
       );
 
-      throw new MutationError('UNAUTHORIZED');
+      throw new MutationError('FORBIDDEN');
     }
 
     const log = ActivityLog.create({ action: logAction, details: entity, user });

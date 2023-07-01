@@ -1,5 +1,6 @@
-import { ArgumentsHost, Catch, HttpException, ValidationPipe } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpException, InternalServerErrorException, ValidationPipe } from '@nestjs/common';
 import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
+import { Response } from 'express';
 
 import { MutationError } from './errors.errors';
 import { CatchReturn } from './errors.types';
@@ -9,7 +10,21 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost): CatchReturn {
     const gqlHost = GqlArgumentsHost.create(host);
 
-    if (gqlHost.getType<any>() !== 'graphql') return exception;
+    if (gqlHost.getType<any>() !== 'graphql') {
+      const ctx = host.switchToHttp();
+      const response = ctx.getResponse<Response>();
+
+      if (exception instanceof MutationError) {
+        response.status(exception.getStatus()).send(exception.toObject());
+        return;
+      }
+
+      const isHttpException = exception instanceof HttpException;
+      const httpException = isHttpException ? exception : new InternalServerErrorException();
+
+      response.status(httpException.getStatus()).send(httpException.getResponse());
+      return;
+    }
 
     if (exception instanceof MutationError) {
       return { success: false, error: exception.toObject() };
