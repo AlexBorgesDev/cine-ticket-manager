@@ -134,7 +134,7 @@ describe('CategoryResolver (e2e)', () => {
       });
 
       describe('when the user does not have enough privileges', () => {
-        it('returns success as false and an error of type UNAUTHORIZED', async () => {
+        it('returns success as false and an error of type FORBIDDEN', async () => {
           const password = faker.internet.password({ length: 12 });
 
           const user = await createUser({ password });
@@ -152,11 +152,11 @@ describe('CategoryResolver (e2e)', () => {
                 success: false,
                 category: null,
                 error: expect.objectContaining({
-                  code: 4001,
+                  code: 4003,
                   items: null,
-                  message: 'Unauthorized action',
-                  statusCode: 401,
-                  type: 'UNAUTHORIZED',
+                  message: 'User without the required privileges',
+                  statusCode: 403,
+                  type: 'FORBIDDEN',
                 }),
               },
             },
