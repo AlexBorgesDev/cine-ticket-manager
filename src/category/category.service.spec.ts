@@ -49,7 +49,7 @@ describe('CategoryService', () => {
       it('throws a MutationError', async () => {
         (getCurrentUser as jest.Mock).mockReturnValueOnce({ role: UserRole.USER });
 
-        await expect(service.create({ name: 'adventure' })).rejects.toThrowError(new MutationError('UNAUTHORIZED'));
+        await expect(service.create({ name: 'adventure' })).rejects.toThrowError(new MutationError('FORBIDDEN'));
       });
     });
   });
