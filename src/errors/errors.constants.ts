@@ -5,6 +5,7 @@ import { ErrorObjectType } from './errors.types';
 
 export enum ErrorType {
   CATEGORY_ALREADY_EXISTS = 'CATEGORY_ALREADY_EXISTS',
+  FORBIDDEN = 'FORBIDDEN',
   INVALID_CREDENTIAL = 'INVALID_CREDENTIAL',
   INVALID_INPUT = 'INVALID_INPUT',
   UNAUTHORIZED = 'UNAUTHORIZED',
@@ -17,6 +18,12 @@ export const errors: Record<ErrorType, ErrorObjectType> = {
     message: 'Category already exists',
     statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
     type: ErrorType.CATEGORY_ALREADY_EXISTS,
+  },
+  FORBIDDEN: {
+    code: 4003,
+    message: 'User without the required privileges',
+    statusCode: HttpStatus.FORBIDDEN,
+    type: ErrorType.FORBIDDEN,
   },
   INVALID_CREDENTIAL: {
     code: 4012,
