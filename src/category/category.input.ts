@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 
-import { capitalize } from '~/@global/utils';
+import { capitalize } from '~/app.utils';
 
 @InputType()
 export class CreateCategoryInput {

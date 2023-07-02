@@ -4,7 +4,7 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { v4 as uuid } from 'uuid';
 
-import { capitalize } from '~/@global/utils';
+import { capitalize } from '~/app.utils';
 import { AuthService } from '~/auth/auth.service';
 import { Category } from '~/category/category.entity';
 import { CreateCategoryInput } from '~/category/category.input';

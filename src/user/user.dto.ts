@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-import { MutationResult } from '~/@global/dto';
+import { MutationResult } from '~/app.dto';
 
 import { User } from './user.entity';
 

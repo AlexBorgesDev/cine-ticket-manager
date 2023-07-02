@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { AfterLoad, BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { capitalize } from '~/@global/utils';
+import { capitalize } from '~/app.utils';
 import { ModificationAllowedOnly } from '~/database/database.decorators';
 import { BaseEntity } from '~/database/database.models';
 
