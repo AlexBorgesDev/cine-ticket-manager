@@ -1,15 +1,24 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-import { ENVs } from '~/@global/env.validation';
-import { EnvName } from '~/@global/types';
+import { ActivityLogSubscriber } from '~/activity-log/activity-log.subscriber';
+import { ENVs, EnvName } from '~/env.validation';
 
 import { DatabaseLogger } from './database.logger';
-import { DBConfigs } from './database.types';
+import { DatabaseSubscriber } from './database.subscriber';
+import { DBConfigs, DBSubscribers } from './database.types';
 
 export const MODIFICATION_ALLOWED_ONLY_KEY = 'modificationAllowedOnly';
 
-export const databaseConfig: DBConfigs = (service) => {
+export const databaseSubscribers: DBSubscribers = (override) => {
+  if (override) {
+    return [...override, DatabaseSubscriber, ActivityLogSubscriber];
+  }
+
+  return ['**/*.subscriber.js', DatabaseSubscriber, ActivityLogSubscriber];
+};
+
+export const databaseConfig: DBConfigs = (service, override) => {
   const configService = service || new ConfigService();
 
   if (!service) ConfigModule.forRoot({ validate: ENVs.validate });
@@ -29,9 +38,10 @@ export const databaseConfig: DBConfigs = (service) => {
     logging: isDev,
     entities: ['**/*.entity.js'],
     migrations: ['database/migrations/*.js'],
-    subscribers: ['**/*.subscriber.js'],
     synchronize: false,
     migrationsRun: !isDev,
     namingStrategy: new SnakeNamingStrategy(),
+    ...override,
+    subscribers: databaseSubscribers(override?.subscribers),
   };
 };

@@ -1,11 +1,12 @@
 // eslint-disable-next-line import/order
-import { EnvName } from '~/@global/types';
+import { EnvName } from '~/env.validation';
 
 process.env.ENV_NAME = EnvName.unitTest;
 
 import { newDb } from 'pg-mem';
 import { DataSource } from 'typeorm';
 
+import { databaseSubscribers } from '~/database/database.constants';
 import { User } from '~/user/user.entity';
 import { UserRole } from '~/user/user.types';
 
@@ -27,7 +28,7 @@ beforeAll(async () => {
   dataSource = (await db.adapters.createTypeormConnection({
     type: 'postgres',
     entities: ['src/**/*.entity.ts'],
-    subscribers: ['src/**/*.subscriber.ts'],
+    subscribers: databaseSubscribers(['src/**/*.subscriber.ts']),
     synchronize: true,
   })) as DataSource;
 
