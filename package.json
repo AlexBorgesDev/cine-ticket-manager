@@ -105,8 +105,12 @@
       ".mock.(t|j)s",
       ".module.ts",
       ".decorators.ts",
-      "src/@global/",
-      "src/database/",
+      "src/database/migration",
+      "src/database/database.data-source.ts",
+      "src/database/database.constants.ts",
+      "src/database/database.logger.ts",
+      "env.validation.ts",
+      "app.*.ts",
       "main.ts"
     ],
     "setupFilesAfterEnv": [

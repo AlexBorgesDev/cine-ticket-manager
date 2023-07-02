@@ -4,8 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 
-import { ENVs } from '~/@global/env.validation';
 import { AuthModule } from '~/auth/auth.module';
+import { ENVs } from '~/env.validation';
 import { HttpExceptionFilter } from '~/errors/errors.filters';
 import { UserModule } from '~/user/user.module';
 

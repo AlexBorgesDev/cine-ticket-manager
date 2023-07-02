@@ -1,7 +1,13 @@
 import { plainToInstance } from 'class-transformer';
 import { IsEnum, IsInt, IsNotEmpty, IsString, validateSync } from 'class-validator';
 
-import { EnvName } from './types';
+export enum EnvName {
+  live = 'live',
+  test = 'test',
+  stage = 'stage',
+  unitTest = 'unitTest',
+  development = 'development',
+}
 
 export class ENVs {
   @IsEnum(EnvName)

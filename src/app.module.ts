@@ -4,12 +4,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ENVs } from './@global/env.validation';
-import { EnvName } from './@global/types';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { databaseConfig } from './database/database.constants';
 import { DirectorModule } from './director/director.module';
+import { ENVs, EnvName } from './env.validation';
 import { UserModule } from './user/user.module';
 
 @Module({

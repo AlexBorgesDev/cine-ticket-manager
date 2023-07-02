@@ -20,9 +20,11 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
       }
 
       const isHttpException = exception instanceof HttpException;
-      const httpException = isHttpException ? exception : new InternalServerErrorException();
+      const status = isHttpException ? exception.getStatus() : 500;
 
-      response.status(httpException.getStatus()).send(httpException.getResponse());
+      const httpException = isHttpException && status !== 500 ? exception : new InternalServerErrorException();
+
+      response.status(status).send(httpException.getResponse());
       return;
     }
 

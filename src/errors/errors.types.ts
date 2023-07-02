@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-import { MutationResult } from '~/@global/dto';
+import { MutationResult } from '~/app.dto';
 
 import { ErrorType } from './errors.constants';
 

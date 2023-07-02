@@ -1,4 +1,13 @@
 import { ConfigService } from '@nestjs/config';
-import { DataSourceOptions } from 'typeorm';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-export type DBConfigs = (configService?: ConfigService) => DataSourceOptions;
+type OptionsOverride = Partial<
+  Omit<PostgresConnectionOptions, 'subscribers' | 'type'> & {
+    subscribers: string[];
+  }
+>;
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type DBSubscribers = (override?: (string | Function)[]) => (string | Function)[];
+
+export type DBConfigs = (config?: ConfigService, override?: OptionsOverride) => PostgresConnectionOptions;
