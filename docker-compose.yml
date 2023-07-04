@@ -15,6 +15,26 @@ services:
     volumes:
       - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
 
+  localstack:
+    image: localstack/localstack
+    restart: unless-stopped
+    container_name: aws-cine-ticket-manager
+    environment:
+      - AWS_ACCESS_KEY_ID=cine-ticket-manager-development
+      - AWS_SECRET_ACCESS_KEY=cine-ticket-manager
+      - AWS_DEFAULT_REGION=us-west-2
+      - AWS_DEFAULT_OUTPUT=json
+      - DATA_DIR=/tmp/localstack/data
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=s3,sqs
+    ports:
+      - 4566:4566
+      - 4510-4559:4510-4559
+    volumes:
+      - ./tmp/localstack:/tmp/localstack
+      - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+
   api:
     container_name: api-cine-ticket-manager
     build:
@@ -28,6 +48,11 @@ services:
     ports:
       - 3000:3000
     environment:
+      - AWS_REGION=us-west-2
+      - AWS_ENDPOINT=http://localstack:4566
+      - AWS_S3_BUCKET=cine-ticket-manager-development-bucket
+      - AWS_ACCESS_KEY_ID=cine-ticket-manager-development
+      - AWS_SECRET_ACCESS_KEY=cine-ticket-manager
       - ENV_NAME=development
       - DB_HOST=database
       - DB_PORT=5432
@@ -37,6 +62,7 @@ services:
       - JWT_SECRET=cine-ticket-manager
     depends_on:
       - database
+      - localstack
     logging:
       driver: 'json-file'
       options:
