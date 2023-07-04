@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { IsEnum, IsInt, IsNotEmpty, IsString, validateSync } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, validateSync } from 'class-validator';
 
 export enum EnvName {
   live = 'live',
@@ -12,6 +12,27 @@ export enum EnvName {
 export class ENVs {
   @IsEnum(EnvName)
   ENV_NAME: EnvName | keyof typeof EnvName;
+
+  @IsString()
+  @IsNotEmpty()
+  AWS_REGION: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  AWS_ENDPOINT: string;
+
+  @IsString()
+  @IsNotEmpty()
+  AWS_S3_BUCKET: string;
+
+  @IsString()
+  @IsNotEmpty()
+  AWS_ACCESS_KEY_ID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  AWS_SECRET_ACCESS_KEY: string;
 
   @IsString()
   @IsNotEmpty()
