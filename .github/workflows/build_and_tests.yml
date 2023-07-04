@@ -14,6 +14,11 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ENV_NAME: 'stage'
+      AWS_REGION: 'us-west-2'
+      AWS_ENDPOINT: 'http://localhost:4566'
+      AWS_S3_BUCKET: 'cine-ticket-manager-development-bucket'
+      AWS_ACCESS_KEY_ID: 'cine-ticket-manager-test'
+      AWS_SECRET_ACCESS_KEY: 'cine-ticket-manager'
       DB_HOST: 'localhost'
       DB_PORT: 5432
       DB_USER: 'postgres'
@@ -35,6 +40,23 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+
+      localstack:
+        image: localstack/localstack
+        env:
+          AWS_ACCESS_KEY_ID: cine-ticket-manager-test
+          AWS_SECRET_ACCESS_KEY: cine-ticket-manager
+          AWS_DEFAULT_REGION: us-west-2
+          AWS_DEFAULT_OUTPUT: json
+          DATA_DIR: /tmp/localstack/data
+          DEBUG: 1
+          DOCKER_HOST: unix:///var/run/docker.sock
+          SERVICES: s3
+        ports:
+          - 4566:4566
+          - 4510-4559:4510-4559
+        volumes:
+          - init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
 
     steps:
       - name: Checkout repository

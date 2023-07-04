@@ -27,7 +27,7 @@ services:
       - DATA_DIR=/tmp/localstack/data
       - DEBUG=1
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - SERVICES=s3,sqs
+      - SERVICES=s3
     ports:
       - 4566:4566
       - 4510-4559:4510-4559
