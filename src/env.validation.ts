@@ -1,12 +1,12 @@
-import { plainToInstance } from 'class-transformer';
-import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, validateSync } from 'class-validator';
+import { Type, plainToInstance } from 'class-transformer';
+import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, ValidateIf, validateSync } from 'class-validator';
 
 export enum EnvName {
-  live = 'live',
-  test = 'test',
-  stage = 'stage',
-  unitTest = 'unitTest',
-  development = 'development',
+  LIVE = 'live',
+  TEST = 'test',
+  STAGE = 'stage',
+  UNIT_TEST = 'unit_test',
+  DEVELOPMENT = 'development',
 }
 
 export class ENVs {
@@ -40,6 +40,7 @@ export class ENVs {
 
   @IsInt()
   @IsNotEmpty()
+  @Type(() => Number)
   DB_PORT: number;
 
   @IsString()
@@ -53,6 +54,11 @@ export class ENVs {
   @IsString()
   @IsNotEmpty()
   DB_DATABASE: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ValidateIf((o) => o.ENV_NAME === EnvName.TEST)
+  DB_DATABASE_TEST: string;
 
   @IsString()
   @IsNotEmpty()
@@ -72,6 +78,6 @@ export class ENVs {
   }
 
   static isUnitTest() {
-    return process.env.ENV_NAME === EnvName.unitTest;
+    return process.env.ENV_NAME === EnvName.UNIT_TEST;
   }
 }

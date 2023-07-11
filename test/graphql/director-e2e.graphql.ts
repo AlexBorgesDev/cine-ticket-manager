@@ -10,7 +10,6 @@ export const directorMutations = {
         updatedAt
       }
       error {
-        code
         items
         message
         statusCode

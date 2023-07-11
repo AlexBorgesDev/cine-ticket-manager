@@ -24,6 +24,7 @@ jobs:
       DB_USER: 'postgres'
       DB_PASS: 'postgres'
       DB_DATABASE: 'cine-ticket-manager-test'
+      DB_DATABASE_TEST: 'cine-ticket-manager-test'
       JWT_SECRET: 'cine-ticket-manager-test'
 
     services:
@@ -82,10 +83,10 @@ jobs:
       - name: Run Unit Tests
         run: npm run test:cov -- --passWithNoTests
 
+      - name: Run e2e Tests
+        run: npm run test:e2e -- --passWithNoTests
+
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run e2e Tests
-        run: npm run test:e2e -- --passWithNoTests

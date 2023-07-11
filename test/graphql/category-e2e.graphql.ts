@@ -10,7 +10,6 @@ export const categoryMutations = {
         updatedAt
       }
       error {
-        code
         items
         message
         statusCode

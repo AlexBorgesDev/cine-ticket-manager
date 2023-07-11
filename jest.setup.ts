@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/order
-import { EnvName } from '~/env.validation';
-
-process.env.ENV_NAME = EnvName.unitTest;
+process.env.ENV_NAME = 'unit_test';
 
 import { newDb } from 'pg-mem';
 import { DataSource } from 'typeorm';

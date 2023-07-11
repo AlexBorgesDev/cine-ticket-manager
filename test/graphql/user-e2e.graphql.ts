@@ -15,7 +15,6 @@ export const userMutations = {
         updatedAt,
       }
       error {
-        code
         items
         message
         statusCode
