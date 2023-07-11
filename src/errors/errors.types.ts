@@ -7,7 +7,6 @@ import { ErrorType } from './errors.constants';
 export type ErrorTypeKey = ErrorType | keyof typeof ErrorType;
 
 export type ErrorObjectType = {
-  code: number;
   message: string;
   statusCode: number | HttpStatus;
   items?: string[];

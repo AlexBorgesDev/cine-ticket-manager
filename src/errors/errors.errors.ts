@@ -6,9 +6,6 @@ import { ErrorObjectType, ErrorTypeKey } from './errors.types';
 
 @ObjectType()
 export class MutationError extends HttpException implements ErrorObjectType {
-  @Field(() => Int, { description: 'A unique code assigned to the error' })
-  readonly code: number;
-
   @Field({ description: 'Short message describing the error' })
   readonly message: string;
 
@@ -26,7 +23,6 @@ export class MutationError extends HttpException implements ErrorObjectType {
 
     super(error.message, error.statusCode);
 
-    this.code = error.code;
     this.message = error.message;
     this.statusCode = error.statusCode;
     this.items = error.items || items;
@@ -35,7 +31,6 @@ export class MutationError extends HttpException implements ErrorObjectType {
 
   toObject(): ErrorObjectType {
     return {
-      code: this.code,
       message: this.message,
       statusCode: this.statusCode,
       items: this.items,
