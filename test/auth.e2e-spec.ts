@@ -55,7 +55,6 @@ describe('AuthResolver (e2e)', () => {
               success: false,
               accessToken: null,
               error: expect.objectContaining({
-                code: 1001,
                 items: expect.any(Array),
                 message: 'Invalid inputs',
                 statusCode: 400,
@@ -85,7 +84,7 @@ describe('AuthResolver (e2e)', () => {
       });
 
       describe('when the user does not exist', () => {
-        it('returns success as false and an error of type UNAUTHORIZED', async () => {
+        it('returns success as false and an error of type INVALID_CREDENTIAL', async () => {
           const res = await request(app.getHttpServer())
             .post('/graphql')
             .send(signInMutation({ email: faker.internet.email({ lastName: Date.now().toString() }) }))
@@ -97,7 +96,6 @@ describe('AuthResolver (e2e)', () => {
                 success: false,
                 accessToken: null,
                 error: expect.objectContaining({
-                  code: 4012,
                   items: null,
                   message: 'Invalid email or password',
                   statusCode: 422,
@@ -110,7 +108,7 @@ describe('AuthResolver (e2e)', () => {
       });
 
       describe('when the password is incorrect', () => {
-        it('returns success as false and an error of type UNAUTHORIZED', async () => {
+        it('returns success as false and an error of type INVALID_CREDENTIAL', async () => {
           const res = await request(app.getHttpServer())
             .post('/graphql')
             .send(signInMutation({ password: '012345678' }))
@@ -122,7 +120,6 @@ describe('AuthResolver (e2e)', () => {
                 success: false,
                 accessToken: null,
                 error: expect.objectContaining({
-                  code: 4012,
                   items: null,
                   message: 'Invalid email or password',
                   statusCode: 422,

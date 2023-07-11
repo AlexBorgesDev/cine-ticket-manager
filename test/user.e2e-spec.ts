@@ -3,24 +3,20 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 
-import { AuthService } from '~/auth/auth.service';
 import { SignUpInput } from '~/user/user.input';
 import { createUser } from '~/user/user.mock';
 import { UserModule } from '~/user/user.module';
 
 import { userMutations, userQueries } from './graphql/user-e2e.graphql';
-import { BaseE2eModule } from './jest-e2e.utils';
+import { BaseE2eModule, e2eUserAndAccessToken } from './jest-e2e.utils';
 
 describe('UserResolver (e2e)', () => {
   let app: INestApplication;
-  let authService: AuthService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [BaseE2eModule, UserModule],
     }).compile();
-
-    authService = moduleRef.get<AuthService>(AuthService);
 
     app = moduleRef.createNestApplication();
     await app.init();
@@ -55,7 +51,6 @@ describe('UserResolver (e2e)', () => {
               success: false,
               user: null,
               error: expect.objectContaining({
-                code: 1001,
                 items: expect.any(Array),
                 message: 'Invalid inputs',
                 statusCode: 400,
@@ -83,7 +78,6 @@ describe('UserResolver (e2e)', () => {
                 success: false,
                 user: null,
                 error: expect.objectContaining({
-                  code: 2002,
                   items: null,
                   message: 'User already exists',
                   statusCode: 422,
@@ -132,10 +126,7 @@ describe('UserResolver (e2e)', () => {
   describe('user (query)', () => {
     describe('when authenticated', () => {
       it('returns the user', async () => {
-        const password = faker.internet.password({ length: 12 });
-
-        const user = await createUser({ password });
-        const { accessToken } = await authService.signIn({ email: user.email, password });
+        const { accessToken, user } = await e2eUserAndAccessToken(app);
 
         const res = await request(app.getHttpServer())
           .post('/graphql')

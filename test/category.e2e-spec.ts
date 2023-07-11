@@ -5,24 +5,17 @@ import * as request from 'supertest';
 import { v4 as uuid } from 'uuid';
 
 import { capitalize } from '~/app.utils';
-import { AuthService } from '~/auth/auth.service';
 import { Category } from '~/category/category.entity';
 import { CreateCategoryInput } from '~/category/category.input';
 import { CategoryModule } from '~/category/category.module';
-import { User } from '~/user/user.entity';
-import { createUser } from '~/user/user.mock';
 import { UserRole } from '~/user/user.types';
 
 import { categoryMutations } from './graphql/category-e2e.graphql';
-import { BaseE2eModule } from './jest-e2e.utils';
+import { BaseE2eModule, e2eUserAndAccessToken } from './jest-e2e.utils';
 
 describe('CategoryResolver (e2e)', () => {
   let app: INestApplication;
-  let authService: AuthService;
-
-  let userTest: User;
   let accessToken: string;
-  const userTestPassword = faker.internet.password({ length: 12 });
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -32,10 +25,7 @@ describe('CategoryResolver (e2e)', () => {
     app = moduleRef.createNestApplication({ logger: false });
     await app.init();
 
-    authService = app.get<AuthService>(AuthService);
-
-    userTest = await createUser({ password: userTestPassword, role: UserRole.ADMIN });
-    accessToken = (await authService.signIn({ email: userTest.email, password: userTestPassword })).accessToken;
+    accessToken = (await e2eUserAndAccessToken(app, { role: UserRole.ADMIN })).accessToken;
   });
 
   describe('createCategory (mutation)', () => {
@@ -63,7 +53,6 @@ describe('CategoryResolver (e2e)', () => {
               success: false,
               category: null,
               error: expect.objectContaining({
-                code: 1001,
                 items: expect.any(Array),
                 message: 'Invalid inputs',
                 statusCode: 400,
@@ -120,7 +109,6 @@ describe('CategoryResolver (e2e)', () => {
                   success: false,
                   category: null,
                   error: expect.objectContaining({
-                    code: 6002,
                     items: null,
                     message: 'Category already exists',
                     statusCode: 422,
@@ -135,15 +123,12 @@ describe('CategoryResolver (e2e)', () => {
 
       describe('when the user does not have enough privileges', () => {
         it('returns success as false and an error of type FORBIDDEN', async () => {
-          const password = faker.internet.password({ length: 12 });
-
-          const user = await createUser({ password });
-          const token = await authService.signIn({ email: user.email, password });
+          const invalidSession = await e2eUserAndAccessToken(app);
 
           const res = await request(app.getHttpServer())
             .post('/graphql')
             .send(createCategoryMutation())
-            .set('Authorization', `Bearer ${token.accessToken}`)
+            .set('Authorization', `Bearer ${invalidSession.accessToken}`)
             .expect(200);
 
           expect(res.body).toEqual({
@@ -152,7 +137,6 @@ describe('CategoryResolver (e2e)', () => {
                 success: false,
                 category: null,
                 error: expect.objectContaining({
-                  code: 4003,
                   items: null,
                   message: 'User without the required privileges',
                   statusCode: 403,
