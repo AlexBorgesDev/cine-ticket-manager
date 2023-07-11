@@ -10,6 +10,7 @@ import { CategoryModule } from './category/category.module';
 import { databaseConfig } from './database/database.constants';
 import { DirectorModule } from './director/director.module';
 import { ENVs, EnvName } from './env.validation';
+import { FileModule } from './file/file.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -31,6 +32,7 @@ import { UserModule } from './user/user.module';
     }),
     AWSModule,
     AuthModule,
+    FileModule,
     UserModule,
     CategoryModule,
     DirectorModule,
