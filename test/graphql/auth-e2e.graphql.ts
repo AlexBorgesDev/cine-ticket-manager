@@ -5,7 +5,6 @@ export const authMutations = {
       success
       accessToken
       error {
-        code
         items
         message
         statusCode
