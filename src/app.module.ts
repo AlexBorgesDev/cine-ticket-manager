@@ -23,7 +23,7 @@ import { UserModule } from './user/user.module';
 
         return {
           autoSchemaFile: true,
-          playground: envName === EnvName.development || envName === EnvName.stage,
+          playground: envName === EnvName.DEVELOPMENT || envName === EnvName.STAGE,
           sortSchema: true,
         };
       },
