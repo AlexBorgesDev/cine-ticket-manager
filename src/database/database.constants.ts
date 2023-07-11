@@ -3,6 +3,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { ActivityLogSubscriber } from '~/activity-log/activity-log.subscriber';
 import { ENVs, EnvName } from '~/env.validation';
+import { StateMachineSubscriber } from '~/state-machine/state-machine.subscriber';
 
 import { DatabaseLogger } from './database.logger';
 import { DatabaseSubscriber } from './database.subscriber';
@@ -12,10 +13,10 @@ export const MODIFICATION_ALLOWED_ONLY_KEY = 'modificationAllowedOnly';
 
 export const databaseSubscribers: DBSubscribers = (override) => {
   if (override) {
-    return [...override, DatabaseSubscriber, ActivityLogSubscriber];
+    return [...override, StateMachineSubscriber, DatabaseSubscriber, ActivityLogSubscriber];
   }
 
-  return ['**/*.subscriber.js', DatabaseSubscriber, ActivityLogSubscriber];
+  return ['**/*.subscriber.js', StateMachineSubscriber, DatabaseSubscriber, ActivityLogSubscriber];
 };
 
 export const databaseConfig: DBConfigs = (service, override) => {
@@ -24,8 +25,8 @@ export const databaseConfig: DBConfigs = (service, override) => {
   if (!service) ConfigModule.forRoot({ validate: ENVs.validate });
 
   const envName = configService.get<EnvName>('ENV_NAME');
-  const isTest = envName === EnvName.test;
-  const isDev = envName === EnvName.development;
+  const isTest = envName === EnvName.TEST;
+  const isDev = envName === EnvName.DEVELOPMENT;
 
   return {
     type: 'postgres',
@@ -33,7 +34,7 @@ export const databaseConfig: DBConfigs = (service, override) => {
     port: configService.get<number>('DB_PORT'),
     username: configService.get<string>('DB_USER'),
     password: configService.get<string>('DB_PASS'),
-    database: isTest ? 'cine-ticket-manager-test' : configService.get<string>('DB_DATABASE'),
+    database: isTest ? configService.get<string>('DB_DATABASE_TEST') : configService.get<string>('DB_DATABASE'),
     logger: isDev && new DatabaseLogger(['log', 'warn']),
     logging: isDev,
     entities: ['**/*.entity.js'],
