@@ -3,7 +3,6 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 import { BaseEntity } from '~/database/database.models';
-import { ENVs } from '~/env.validation';
 import { User } from '~/user/user.entity';
 
 import { ActivityLogDetailsTransform } from './activity-log.utils';
@@ -11,7 +10,7 @@ import { ActivityLogDetailsTransform } from './activity-log.utils';
 @ObjectType()
 @Entity('activity_logs')
 export class ActivityLog extends BaseEntity {
-  @PrimaryGeneratedColumn('increment', !ENVs.isUnitTest() && { type: 'bigint' })
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: string;
 
   @IsNotEmpty()
