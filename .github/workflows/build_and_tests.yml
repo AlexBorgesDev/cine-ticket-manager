@@ -83,6 +83,9 @@ jobs:
       - name: Run Unit Tests
         run: npm run test:cov -- --passWithNoTests
 
+      - name: Preparing for the e2e test
+        run: node .github/e2e-util.js
+
       - name: Run e2e Tests
         run: npm run test:e2e -- --passWithNoTests
 
